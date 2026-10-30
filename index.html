@@ -1,0 +1,804 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sales Dashboard</title>
+<style>
+  :root {
+    --bg: #f4f6f9;
+    --surface: #ffffff;
+    --ink: #1b2430;
+    --muted: #6b7686;
+    --line: #e3e7ed;
+    --grid: #eef1f5;
+    --accent: #1f4e79;
+    --accent-2: #2f7dbd;
+    --accent-soft: #e8f0f8;
+    --shadow: 0 1px 2px rgba(16,24,40,.05), 0 1px 3px rgba(16,24,40,.06);
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: "Segoe UI", -apple-system, BlinkMacSystemFont, Roboto, "Helvetica Neue", Arial, sans-serif;
+    font-size: 14px;
+    line-height: 1.45;
+  }
+  header {
+    background: var(--surface);
+    border-bottom: 1px solid var(--line);
+  }
+  .wrap { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+  .bar {
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 16px; padding: 18px 0; flex-wrap: wrap;
+  }
+  h1 { font-size: 20px; font-weight: 600; margin: 0; letter-spacing: -.01em; }
+  .sub { color: var(--muted); font-size: 13px; margin-top: 2px; }
+  .actions { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+  .file-name { color: var(--muted); font-size: 13px; }
+  .btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: var(--accent); color: #fff; border: 0; border-radius: 6px;
+    padding: 9px 16px; font: inherit; font-weight: 600; cursor: pointer;
+  }
+  .btn:hover { background: #183f63; }
+  .btn.secondary { background: #fff; color: var(--accent); border: 1px solid #c9d1dc; padding: 8px 15px; }
+  .btn.secondary:hover { background: var(--accent-soft); border-color: var(--accent-2); }
+  .print-only { display: none; }
+  .btn:focus-visible { outline: 2px solid var(--accent-2); outline-offset: 2px; }
+  .btn svg { width: 16px; height: 16px; }
+  input[type=file] { display: none; }
+
+  main.wrap { padding-top: 24px; padding-bottom: 40px; }
+  .empty {
+    background: var(--surface); border: 1.5px dashed #c9d1dc; border-radius: 10px;
+    padding: 56px 24px; text-align: center; color: var(--muted);
+  }
+  .empty.drag { border-color: var(--accent-2); background: var(--accent-soft); }
+  .empty h2 { color: var(--ink); font-size: 16px; font-weight: 600; margin: 0 0 6px; }
+  .empty p { margin: 0 0 18px; }
+  .error {
+    display: none; margin-bottom: 16px; padding: 12px 14px; border-radius: 8px;
+    background: #fdf0ef; border: 1px solid #f3c7c3; color: #8a2a21;
+  }
+
+  .filters {
+    display: flex; align-items: flex-end; gap: 16px; flex-wrap: wrap;
+    padding: 14px 20px; margin-bottom: 16px;
+  }
+  .field { display: flex; flex-direction: column; gap: 4px; min-width: 180px; }
+  .field label { color: var(--muted); font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: .05em; }
+  .field select {
+    font: inherit; color: var(--ink); background: #fff;
+    border: 1px solid #c9d1dc; border-radius: 6px; padding: 8px 32px 8px 10px;
+    appearance: none; -webkit-appearance: none; cursor: pointer;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%236b7686' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+    background-repeat: no-repeat; background-position: right 10px center;
+  }
+  .field select:focus-visible { outline: 2px solid var(--accent-2); outline-offset: 1px; border-color: var(--accent-2); }
+  .field select.active { border-color: var(--accent); background-color: var(--accent-soft); font-weight: 600; }
+  .link-btn {
+    background: none; border: 0; padding: 8px 4px; font: inherit; color: var(--accent-2);
+    cursor: pointer; font-weight: 600;
+  }
+  .link-btn:hover { text-decoration: underline; }
+  .link-btn[disabled] { color: #b3bcc8; cursor: default; text-decoration: none; }
+  .filter-status { margin-left: auto; color: var(--muted); font-size: 13px; padding-bottom: 8px; }
+  .filter-status b { color: var(--ink); font-weight: 600; }
+
+  .kpis { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 16px; }
+  .card {
+    background: var(--surface); border: 1px solid var(--line); border-radius: 10px;
+    box-shadow: var(--shadow);
+  }
+  .kpi { padding: 18px 20px; border-top: 3px solid var(--accent); }
+  .kpi .label { color: var(--muted); font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: .05em; }
+  .kpi .value { font-size: 28px; font-weight: 650; margin-top: 6px; font-variant-numeric: tabular-nums; letter-spacing: -.01em; }
+  .kpi .note { color: var(--muted); font-size: 13px; margin-top: 4px; font-variant-numeric: tabular-nums; }
+
+  .insights { padding: 18px 20px; margin-bottom: 16px; border-left: 3px solid var(--accent); }
+  .insights h3 { margin: 0 0 10px; font-size: 15px; font-weight: 600; display: flex; align-items: center; gap: 8px; }
+  .insights h3 svg { width: 16px; height: 16px; color: var(--accent); }
+  .insights ul { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  .insights li { display: flex; gap: 12px; align-items: flex-start; min-width: 0; }
+  .insights .num {
+    flex: none; width: 24px; height: 24px; border-radius: 50%;
+    background: var(--accent-soft); color: var(--accent);
+    font-size: 12px; font-weight: 700; display: grid; place-items: center; margin-top: 1px;
+  }
+  .insights .kind { display: block; color: var(--muted); font-size: 11.5px; font-weight: 600; text-transform: uppercase; letter-spacing: .05em; margin-bottom: 2px; }
+  .insights p { margin: 0; color: var(--ink); }
+  .insights b { font-weight: 650; }
+  .insights .up { color: #1a7f4b; font-weight: 650; }
+  .insights .down { color: #b4342a; font-weight: 650; }
+
+  .charts { display: grid; grid-template-columns: 2fr 3fr; gap: 16px; }
+  .chart { padding: 18px 20px 12px; min-width: 0; }
+  .chart h3 { margin: 0; font-size: 15px; font-weight: 600; }
+  .chart .hint { color: var(--muted); font-size: 12px; margin: 2px 0 8px; }
+  .chart svg { display: block; width: 100%; height: auto; overflow: visible; }
+  .chart svg text { font-family: inherit; fill: var(--muted); font-size: 11px; }
+  .chart svg .val { fill: var(--ink); font-size: 11.5px; font-weight: 600; }
+  .bar-rect { fill: var(--accent-2); }
+  .bar-rect.top { fill: var(--accent); }
+  .tip {
+    position: fixed; pointer-events: none; z-index: 10; display: none;
+    background: #1b2430; color: #fff; padding: 7px 10px; border-radius: 6px;
+    font-size: 12px; box-shadow: 0 4px 12px rgba(0,0,0,.18); white-space: nowrap;
+  }
+  .tip b { font-variant-numeric: tabular-nums; }
+  .table-card { margin-top: 16px; padding: 18px 20px 8px; }
+  .table-card .head { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; flex-wrap: wrap; }
+  .table-card h3 { margin: 0; font-size: 15px; font-weight: 600; }
+  .table-card .hint { color: var(--muted); font-size: 12px; margin: 2px 0 12px; }
+  .table-scroll { overflow-x: auto; margin: 0 -20px; padding: 0 20px; }
+  table.pivot { width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums; }
+  .pivot th, .pivot td { padding: 10px 12px; text-align: right; white-space: nowrap; border-bottom: 1px solid var(--line); }
+  .pivot th:first-child, .pivot td:first-child { text-align: left; padding-left: 0; }
+  .pivot th:last-child, .pivot td:last-child { padding-right: 0; }
+  .pivot thead th { font-size: 12px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; border-bottom: 1.5px solid #c9d1dc; }
+  .pivot thead th button {
+    font: inherit; color: inherit; text-transform: inherit; letter-spacing: inherit;
+    background: none; border: 0; padding: 0; cursor: pointer;
+    display: inline-flex; align-items: center; gap: 4px;
+  }
+  .pivot thead th button:hover { color: var(--ink); }
+  .pivot thead th button:focus-visible { outline: 2px solid var(--accent-2); outline-offset: 2px; border-radius: 2px; }
+  .pivot thead th[aria-sort] button { color: var(--accent); }
+  .pivot .arrow { display: inline-block; width: 10px; font-size: 10px; opacity: .35; }
+  .pivot th[aria-sort] .arrow { opacity: 1; }
+  .pivot tbody tr:hover td { background: #f7f9fc; }
+  .pivot td.total, .pivot th.total { font-weight: 600; color: var(--ink); background: #f7f9fc; }
+  .pivot thead th.total { color: var(--muted); }
+  .pivot td.best { color: var(--accent); font-weight: 600; }
+  .pivot tfoot td { font-weight: 650; color: var(--ink); border-top: 1.5px solid #c9d1dc; border-bottom: 0; background: #f7f9fc; }
+  .pivot .share { display: block; color: var(--muted); font-size: 11px; font-weight: 400; }
+
+  footer { color: var(--muted); font-size: 12px; margin-top: 16px; }
+
+  @media (max-width: 960px) {
+    .kpis { grid-template-columns: repeat(2, 1fr); }
+    .charts { grid-template-columns: 1fr; }
+    .insights ul { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 520px) {
+    .wrap { padding: 0 16px; }
+    .kpis { grid-template-columns: 1fr; }
+    .field { flex: 1 1 100%; }
+    .filter-status { margin-left: 0; }
+    .kpi .value { font-size: 24px; }
+  }
+
+  /* ---------- Print: A4 landscape ---------- */
+  @page { size: A4 landscape; margin: 9mm 10mm; }
+  @media print {
+    html, body { background: #fff; font-size: 11px; }
+    * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .actions, .filters, .empty, .error, .tip, #footer, .table-card .hint .sort-help { display: none !important; }
+    .print-only { display: block; }
+    header { border-bottom: 1.5px solid var(--accent); }
+    .wrap { max-width: none; padding: 0; }
+    .bar { padding: 0 0 6px; align-items: flex-end; }
+    h1 { font-size: 17px; }
+    .print-meta { text-align: right; color: var(--muted); font-size: 10.5px; line-height: 1.5; }
+    .print-meta b { color: var(--ink); }
+    main.wrap { padding: 8px 0 0; }
+    .card { box-shadow: none; break-inside: avoid; }
+    .kpis { grid-template-columns: repeat(4, 1fr) !important; gap: 8px; margin-bottom: 8px; }
+    .kpi { padding: 9px 12px; }
+    .kpi .label { font-size: 9.5px; }
+    .kpi .value { font-size: 20px; margin-top: 2px; }
+    .kpi .note { font-size: 10.5px; margin-top: 1px; }
+    .insights { padding: 9px 12px; margin-bottom: 8px; }
+    .insights h3 { font-size: 12.5px; margin-bottom: 6px; }
+    .insights ul { grid-template-columns: repeat(3, 1fr) !important; gap: 12px; }
+    .insights .num { width: 18px; height: 18px; font-size: 10px; }
+    .insights .kind { font-size: 9.5px; }
+    .insights p { font-size: 10.5px; line-height: 1.4; }
+    .charts { grid-template-columns: 2fr 3fr !important; gap: 8px; }
+    .chart { padding: 9px 12px 4px; }
+    .chart h3 { font-size: 12.5px; }
+    .chart .hint { font-size: 10px; margin-bottom: 2px; }
+    .table-card { break-before: page; margin-top: 0; padding: 12px 14px 4px; }
+    .table-card h3 { font-size: 14px; }
+    .table-scroll { overflow: visible; margin: 0; padding: 0; }
+    .pivot th, .pivot td { padding: 6px 10px; }
+    .pivot thead th button .arrow { display: none; }
+    .pivot tbody tr:hover td { background: none; }
+  }
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap bar">
+    <div>
+      <h1>Sales Dashboard</h1>
+      <div class="sub" id="period">Monthly sales by region and product</div>
+    </div>
+    <div class="actions">
+      <span class="file-name" id="fileName"></span>
+      <button class="btn" id="loadBtn" type="button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+        Load CSV file
+      </button>
+      <button class="btn secondary" id="printBtn" type="button" hidden>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+        Print / Save as PDF
+      </button>
+      <input type="file" id="fileInput" accept=".csv,text/csv">
+    </div>
+    <div class="print-only print-meta" id="printMeta"></div>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="error" id="error"></div>
+
+  <div class="empty" id="empty">
+    <h2>No data loaded</h2>
+    <p>Choose a CSV with the columns Month, Region, Product, Units and Revenue, or drop it here.</p>
+    <button class="btn" type="button" onclick="document.getElementById('fileInput').click()">Load CSV file</button>
+  </div>
+
+  <div id="dash" hidden>
+    <section class="card filters" aria-label="Filters">
+      <div class="field">
+        <label for="fRegion">Region</label>
+        <select id="fRegion"></select>
+      </div>
+      <div class="field">
+        <label for="fProduct">Product</label>
+        <select id="fProduct"></select>
+      </div>
+      <button class="link-btn" id="resetBtn" type="button" disabled>Reset filters</button>
+      <div class="filter-status" id="filterStatus"></div>
+    </section>
+
+    <section class="kpis">
+      <div class="card kpi"><div class="label">Total Revenue</div><div class="value" id="kRev"></div><div class="note" id="kRevNote"></div></div>
+      <div class="card kpi"><div class="label">Total Units Sold</div><div class="value" id="kUnits"></div><div class="note" id="kUnitsNote"></div></div>
+      <div class="card kpi"><div class="label">Best Region</div><div class="value" id="kRegion"></div><div class="note" id="kRegionNote"></div></div>
+      <div class="card kpi"><div class="label">Best Product</div><div class="value" id="kProduct"></div><div class="note" id="kProductNote"></div></div>
+    </section>
+
+    <section class="card insights" aria-live="polite">
+      <h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M12 2a7 7 0 0 0-4 12.7V17h8v-2.3A7 7 0 0 0 12 2z"/></svg>Insights</h3>
+      <ul id="insightList"></ul>
+    </section>
+
+    <section class="charts">
+      <div class="card chart">
+        <h3>Revenue by Region</h3>
+        <div class="hint" id="regionHint">Total for the period</div>
+        <div id="regionChart"></div>
+      </div>
+      <div class="card chart">
+        <h3>Revenue by Month</h3>
+        <div class="hint" id="monthHint">All regions and products</div>
+        <div id="monthChart"></div>
+      </div>
+    </section>
+    <section class="card table-card">
+      <div class="head">
+        <h3>Revenue by Product and Region</h3>
+      </div>
+      <div class="hint" id="tableHint">Click a column heading to sort</div>
+      <div class="table-scroll"><table class="pivot" id="pivot"></table></div>
+    </section>
+    <footer id="footer"></footer>
+  </div>
+</main>
+<div class="tip" id="tip"></div>
+
+<script>
+(function () {
+  "use strict";
+  var $ = function (id) { return document.getElementById(id); };
+  var NS = "http://www.w3.org/2000/svg";
+  var MONTHS = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+  var lastData = null;
+
+  /* ---------- Indian number formatting ---------- */
+  var inGroup = new Intl.NumberFormat("en-IN", { maximumFractionDigits: 0 });
+  function trim(n, d) { return n.toFixed(d).replace(/\.?0+$/, ""); }
+  // Compact: ₹30.55 Cr, ₹8.56 L, ₹45,000
+  function inr(n, digits) {
+    var d = digits == null ? 2 : digits, a = Math.abs(n), s = n < 0 ? "-" : "";
+    if (a >= 1e7) return s + "₹" + trim(a / 1e7, d) + " Cr";
+    if (a >= 1e5) return s + "₹" + trim(a / 1e5, d) + " L";
+    return s + "₹" + inGroup.format(a);
+  }
+  // Fixed 2 decimals so table columns line up: ₹3.50 Cr, ₹39.80 L
+  function inr2(n) {
+    var a = Math.abs(n), s = n < 0 ? "-" : "";
+    if (a >= 1e7) return s + "₹" + (a / 1e7).toFixed(2) + " Cr";
+    if (a >= 1e5) return s + "₹" + (a / 1e5).toFixed(2) + " L";
+    return s + "₹" + inGroup.format(a);
+  }
+  function inrFull(n) { return "₹" + inGroup.format(n); }
+
+  /* ---------- CSV parsing ---------- */
+  function parseCSV(text) {
+    text = text.replace(/^﻿/, "");
+    var rows = [], row = [], field = "", q = false;
+    for (var i = 0; i < text.length; i++) {
+      var c = text[i];
+      if (q) {
+        if (c === '"') { if (text[i + 1] === '"') { field += '"'; i++; } else q = false; }
+        else field += c;
+      } else if (c === '"') q = true;
+      else if (c === ",") { row.push(field); field = ""; }
+      else if (c === "\n" || c === "\r") {
+        if (c === "\r" && text[i + 1] === "\n") i++;
+        row.push(field); field = "";
+        if (row.some(function (v) { return v.trim() !== ""; })) rows.push(row);
+        row = [];
+      } else field += c;
+    }
+    row.push(field);
+    if (row.some(function (v) { return v.trim() !== ""; })) rows.push(row);
+    return rows;
+  }
+  function num(v) {
+    var n = parseFloat(String(v).replace(/[₹,\s]/g, ""));
+    return isNaN(n) ? 0 : n;
+  }
+  function monthKey(v) {
+    v = String(v).trim();
+    var m = v.match(/^(\d{4})-(\d{1,2})/);
+    if (m) return m[1] + "-" + ("0" + m[2]).slice(-2);
+    var d = new Date(v);
+    if (!isNaN(d)) return d.getFullYear() + "-" + ("0" + (d.getMonth() + 1)).slice(-2);
+    return v;
+  }
+  function monthLabel(k, withYear) {
+    var m = k.match(/^(\d{4})-(\d{2})$/);
+    if (!m) return k;
+    return MONTHS[+m[2] - 1] + (withYear ? " " + m[1] : "");
+  }
+
+  // Turn CSV rows into plain records once; filters work on these.
+  function toRecords(rows) {
+    var head = rows[0].map(function (h) { return h.trim().toLowerCase(); });
+    var col = {};
+    ["month", "region", "product", "units", "revenue"].forEach(function (k) { col[k] = head.indexOf(k); });
+    var missing = Object.keys(col).filter(function (k) { return col[k] < 0; });
+    if (missing.length) throw new Error("The file is missing these columns: " + missing.join(", ") + ". Expected Month, Region, Product, Units, Revenue.");
+    var recs = [];
+    for (var i = 1; i < rows.length; i++) {
+      var r = rows[i];
+      recs.push({
+        month: monthKey(r[col.month] || ""),
+        region: (r[col.region] || "").trim() || "(blank)",
+        product: (r[col.product] || "").trim() || "(blank)",
+        units: num(r[col.units]),
+        revenue: num(r[col.revenue])
+      });
+    }
+    if (!recs.length) throw new Error("The file has a header row but no data rows.");
+    return recs;
+  }
+
+  // allMonths keeps every month on the time axis even if a filter leaves one at zero.
+  function aggregate(recs, allMonths) {
+    var out = { revenue: 0, units: 0, rows: 0, region: {}, product: {}, productUnits: {}, regionUnits: {}, month: {}, cross: {}, regionMonth: {} };
+    (allMonths || []).forEach(function (k) { out.month[k] = 0; });
+    for (var i = 0; i < recs.length; i++) {
+      var r = recs[i];
+      var rev = r.revenue, u = r.units, reg = r.region, prod = r.product, mon = r.month;
+      out.revenue += rev; out.units += u; out.rows++;
+      out.region[reg] = (out.region[reg] || 0) + rev;
+      out.regionUnits[reg] = (out.regionUnits[reg] || 0) + u;
+      out.product[prod] = (out.product[prod] || 0) + rev;
+      out.productUnits[prod] = (out.productUnits[prod] || 0) + u;
+      out.month[mon] = (out.month[mon] || 0) + rev;
+      var cr = out.cross[prod] || (out.cross[prod] = {});
+      cr[reg] = (cr[reg] || 0) + rev;
+      var rm = out.regionMonth[reg] || (out.regionMonth[reg] = {});
+      rm[mon] = (rm[mon] || 0) + rev;
+    }
+    return out;
+  }
+  function best(obj) {
+    var k = null;
+    for (var key in obj) if (k === null || obj[key] > obj[k]) k = key;
+    return k;
+  }
+  function pct(part, whole) { return whole ? (part / whole * 100).toFixed(1) + "%" : "–"; }
+
+  /* ---------- SVG helpers ---------- */
+  function el(tag, attrs, parent, text) {
+    var e = document.createElementNS(NS, tag);
+    for (var a in attrs) e.setAttribute(a, attrs[a]);
+    if (text != null) e.textContent = text;
+    if (parent) parent.appendChild(e);
+    return e;
+  }
+  // Clean axis: returns {max, step, n} with round tick steps (1, 2, 2.5, 5 x 10^k)
+  function niceScale(v) {
+    if (v <= 0) return { max: 1, step: 0.25, n: 4 };
+    var raw = v / 4, p = Math.pow(10, Math.floor(Math.log10(raw))), f = raw / p;
+    var step = (f <= 1 ? 1 : f <= 2 ? 2 : f <= 2.5 ? 2.5 : f <= 5 ? 5 : 10) * p;
+    var n = Math.ceil(v / step);
+    return { max: n * step, step: step, n: n };
+  }
+  var tip = $("tip");
+  function showTip(e, html) {
+    tip.innerHTML = html; tip.style.display = "block";
+    var x = e.clientX + 14, y = e.clientY - 12;
+    var w = tip.offsetWidth;
+    if (x + w > window.innerWidth - 8) x = e.clientX - w - 14;
+    tip.style.left = x + "px"; tip.style.top = y + "px";
+  }
+  function hideTip() { tip.style.display = "none"; }
+
+  /* ---------- Bar chart: revenue by region ---------- */
+  function drawRegion(data) {
+    var box = $("regionChart"); box.innerHTML = "";
+    var items = Object.keys(data.region).map(function (k) { return [k, data.region[k]]; })
+      .sort(function (a, b) { return b[1] - a[1]; });
+    var W = Math.max(box.clientWidth, 280), H = printing ? 360 : 300;
+    var m = { t: 24, r: 8, b: 30, l: 62 };
+    var iw = W - m.l - m.r, ih = H - m.t - m.b;
+    var sc = niceScale(items[0][1] * 1.05), max = sc.max;
+    var svg = el("svg", { viewBox: "0 0 " + W + " " + H, role: "img", "aria-label": "Bar chart of revenue by region" }, box);
+    for (var i = 0; i <= sc.n; i++) {
+      var v = sc.step * i, y = m.t + ih - ih * v / max;
+      el("line", { x1: m.l, x2: W - m.r, y1: y, y2: y, stroke: i ? "var(--grid)" : "#c9d1dc", "stroke-width": 1 }, svg);
+      el("text", { x: m.l - 8, y: y + 4, "text-anchor": "end" }, svg, inr(v, 1));
+    }
+    var slot = iw / items.length, bw = Math.min(56, slot * 0.58);
+    items.forEach(function (it, idx) {
+      var x = m.l + slot * idx + (slot - bw) / 2;
+      var h = ih * it[1] / max, y = m.t + ih - h;
+      var r = el("rect", { x: x, y: y, width: bw, height: Math.max(h, 0), rx: 3, "class": "bar-rect" + (idx === 0 ? " top" : "") }, svg);
+      el("text", { x: x + bw / 2, y: y - 7, "text-anchor": "middle", "class": "val" }, svg, inr(it[1]));
+      el("text", { x: x + bw / 2, y: H - m.b + 18, "text-anchor": "middle" }, svg, it[0]);
+      var html = "<div>" + it[0] + "</div><b>" + inrFull(Math.round(it[1])) + "</b> · " + pct(it[1], data.revenue) + " of total";
+      r.addEventListener("mousemove", function (e) { showTip(e, html); });
+      r.addEventListener("mouseleave", hideTip);
+    });
+  }
+
+  /* ---------- Line chart: revenue by month ---------- */
+  function drawMonth(data) {
+    var box = $("monthChart"); box.innerHTML = "";
+    var keys = Object.keys(data.month).sort();
+    var years = {}; keys.forEach(function (k) { years[k.slice(0, 4)] = 1; });
+    var multiYear = Object.keys(years).length > 1;
+    var vals = keys.map(function (k) { return data.month[k]; });
+    var W = Math.max(box.clientWidth, 280), H = printing ? 360 : 300;
+    var m = { t: 24, r: 16, b: 30, l: 62 };
+    var iw = W - m.l - m.r, ih = H - m.t - m.b;
+    var sc = niceScale(Math.max.apply(null, vals) * 1.05), max = sc.max;
+    var svg = el("svg", { viewBox: "0 0 " + W + " " + H, role: "img", "aria-label": "Line chart of revenue by month" }, box);
+    for (var i = 0; i <= sc.n; i++) {
+      var v = sc.step * i, y = m.t + ih - ih * v / max;
+      el("line", { x1: m.l, x2: W - m.r, y1: y, y2: y, stroke: i ? "var(--grid)" : "#c9d1dc", "stroke-width": 1 }, svg);
+      el("text", { x: m.l - 8, y: y + 4, "text-anchor": "end" }, svg, inr(v, 1));
+    }
+    var step = keys.length > 1 ? iw / (keys.length - 1) : 0;
+    var pts = vals.map(function (v, i) {
+      return [m.l + (keys.length > 1 ? step * i : iw / 2), m.t + ih - ih * v / max];
+    });
+    var every = Math.ceil(keys.length / Math.max(1, Math.floor(iw / 44)));
+    keys.forEach(function (k, i) {
+      if (i % every === 0 || i === keys.length - 1)
+        el("text", { x: pts[i][0], y: H - m.b + 18, "text-anchor": "middle" }, svg, monthLabel(k, multiYear));
+    });
+    var line = pts.map(function (p, i) { return (i ? "L" : "M") + p[0].toFixed(1) + " " + p[1].toFixed(1); }).join(" ");
+    if (pts.length > 1) {
+      var area = line + " L" + pts[pts.length - 1][0] + " " + (m.t + ih) + " L" + pts[0][0] + " " + (m.t + ih) + " Z";
+      el("path", { d: area, fill: "var(--accent-2)", "fill-opacity": .08 }, svg);
+    }
+    el("path", { d: line, fill: "none", stroke: "var(--accent-2)", "stroke-width": 2.5, "stroke-linejoin": "round", "stroke-linecap": "round" }, svg);
+
+    var peak = vals.indexOf(Math.max.apply(null, vals));
+    var guide = el("line", { y1: m.t, y2: m.t + ih, stroke: "#9aa5b4", "stroke-dasharray": "3 3", visibility: "hidden" }, svg);
+    var dots = pts.map(function (p, i) {
+      return el("circle", { cx: p[0], cy: p[1], r: i === peak ? 4.5 : 3, fill: "#fff", stroke: i === peak ? "var(--accent)" : "var(--accent-2)", "stroke-width": 2 }, svg);
+    });
+    var pl = pts[peak];
+    el("text", { x: Math.min(Math.max(pl[0], m.l + 30), W - m.r - 30), y: pl[1] - 10, "text-anchor": "middle", "class": "val" }, svg, inr(vals[peak]));
+
+    var hit = el("rect", { x: m.l - step / 2, y: m.t, width: iw + step, height: ih, fill: "transparent" }, svg);
+    hit.addEventListener("mousemove", function (e) {
+      var rect = svg.getBoundingClientRect();
+      var x = (e.clientX - rect.left) * (W / rect.width);
+      var i = keys.length > 1 ? Math.round((x - m.l) / step) : 0;
+      i = Math.max(0, Math.min(keys.length - 1, i));
+      guide.setAttribute("x1", pts[i][0]); guide.setAttribute("x2", pts[i][0]);
+      guide.setAttribute("visibility", "visible");
+      dots.forEach(function (d, j) { d.setAttribute("r", j === i ? 5 : (j === peak ? 4.5 : 3)); });
+      var prev = i > 0 ? vals[i - 1] : null;
+      var chg = prev ? ((vals[i] - prev) / prev * 100) : null;
+      showTip(e, "<div>" + monthLabel(keys[i], true) + "</div><b>" + inrFull(Math.round(vals[i])) + "</b>" +
+        (chg != null ? " · " + (chg >= 0 ? "+" : "") + chg.toFixed(1) + "% vs prev." : ""));
+    });
+    hit.addEventListener("mouseleave", function () {
+      hideTip(); guide.setAttribute("visibility", "hidden");
+      dots.forEach(function (d, j) { d.setAttribute("r", j === peak ? 4.5 : 3); });
+    });
+  }
+
+  /* ---------- Pivot table: product x region ---------- */
+  var sortState = { key: "__total", dir: "desc" };
+  function drawTable(data) {
+    var t = $("pivot"); t.innerHTML = "";
+    var regions = Object.keys(data.region).sort(function (a, b) { return data.region[b] - data.region[a]; });
+    var rows = Object.keys(data.product).map(function (p) {
+      var o = { name: p, __total: data.product[p] };
+      regions.forEach(function (r) { o[r] = (data.cross[p] && data.cross[p][r]) || 0; });
+      return o;
+    });
+    // If the sorted column was filtered away, fall back to Total
+    if (sortState.key !== "__name" && sortState.key !== "__total" && regions.indexOf(sortState.key) < 0)
+      sortState = { key: "__total", dir: "desc" };
+    var k = sortState.key, sign = sortState.dir === "asc" ? 1 : -1;
+    rows.sort(function (a, b) {
+      if (k === "__name") return sign * a.name.localeCompare(b.name);
+      return sign * (a[k] - b[k]) || a.name.localeCompare(b.name);
+    });
+
+    var cols = [{ key: "__name", label: "Product" }]
+      .concat(regions.map(function (r) { return { key: r, label: r }; }))
+      .concat([{ key: "__total", label: "Total", cls: "total" }]);
+
+    var thead = document.createElement("thead"), hr = thead.insertRow();
+    cols.forEach(function (c) {
+      var th = document.createElement("th");
+      th.scope = "col";
+      if (c.cls) th.className = c.cls;
+      var active = sortState.key === c.key;
+      if (active) th.setAttribute("aria-sort", sortState.dir === "asc" ? "ascending" : "descending");
+      var b = document.createElement("button"); b.type = "button";
+      b.title = "Sort by " + c.label;
+      var arrow = active ? (sortState.dir === "asc" ? "▲" : "▼") : "↕";
+      b.innerHTML = (c.key === "__name" ? "" : '<span class="arrow">' + arrow + "</span>") + esc(c.label) +
+                    (c.key === "__name" ? '<span class="arrow">' + arrow + "</span>" : "");
+      b.addEventListener("click", function () {
+        if (sortState.key === c.key) sortState.dir = sortState.dir === "asc" ? "desc" : "asc";
+        else sortState = { key: c.key, dir: c.key === "__name" ? "asc" : "desc" };
+        drawTable(lastData);
+      });
+      th.appendChild(b); hr.appendChild(th);
+    });
+    t.appendChild(thead);
+
+    // Highlight each region's top product
+    var bestIn = {};
+    regions.forEach(function (r) {
+      var top = null; rows.forEach(function (row) { if (!top || row[r] > top[r]) top = row; });
+      if (top && rows.length > 1) bestIn[r] = top.name;
+    });
+
+    var tb = document.createElement("tbody");
+    rows.forEach(function (row) {
+      var tr = tb.insertRow();
+      var th = document.createElement("td"); th.textContent = row.name; tr.appendChild(th);
+      regions.forEach(function (r) {
+        var td = tr.insertCell(); td.textContent = inr2(row[r]); td.title = inrFull(Math.round(row[r]));
+        if (bestIn[r] === row.name) { td.className = "best"; td.title += " (top product in " + r + ")"; }
+      });
+      var tt = tr.insertCell(); tt.className = "total";
+      tt.innerHTML = esc(inr2(row.__total)) + '<span class="share">' + pct(row.__total, data.revenue) + "</span>";
+      tt.title = inrFull(Math.round(row.__total));
+    });
+    t.appendChild(tb);
+
+    var tf = document.createElement("tfoot"), fr = tf.insertRow();
+    var l = fr.insertCell(); l.textContent = "Total";
+    regions.forEach(function (r) {
+      var td = fr.insertCell();
+      td.innerHTML = esc(inr2(data.region[r])) + '<span class="share">' + pct(data.region[r], data.revenue) + "</span>";
+      td.title = inrFull(Math.round(data.region[r]));
+    });
+    var g = fr.insertCell(); g.textContent = inr2(data.revenue); g.title = inrFull(Math.round(data.revenue));
+    t.appendChild(tf);
+
+    var lbl = { __name: "product name", __total: "total revenue" }[sortState.key] || sortState.key + " revenue";
+    var dirTxt = sortState.key === "__name"
+      ? (sortState.dir === "asc" ? "A to Z" : "Z to A")
+      : (sortState.dir === "asc" ? "low to high" : "high to low");
+    $("tableHint").innerHTML = "Sorted by " + esc(lbl) + " (" + dirTxt + '). <span class="sort-help">Click a column heading to sort. </span>Blue figures mark each region\'s top product.';
+  }
+
+  /* ---------- Insights ---------- */
+  function quarterOf(k) {
+    var m = k.match(/^(\d{4})-(\d{2})$/);
+    return m ? { key: m[1] + "-Q" + Math.ceil(+m[2] / 3), label: "Q" + Math.ceil(+m[2] / 3) + " " + m[1],
+                 range: MONTHS[(Math.ceil(+m[2] / 3) - 1) * 3] + "–" + MONTHS[(Math.ceil(+m[2] / 3) - 1) * 3 + 2] } : null;
+  }
+  function drawInsights(data) {
+    var items = [];
+
+    // 1. Best month
+    var months = Object.keys(data.month).filter(function (k) { return data.month[k] > 0; });
+    if (months.length) {
+      var bm = months.reduce(function (a, b) { return data.month[b] > data.month[a] ? b : a; });
+      var avg = data.revenue / months.length;
+      items.push(["Best month",
+        "<b>" + esc(monthLabel(bm, true)) + "</b> was the best month, bringing in <b>" + inr(data.month[bm]) +
+        "</b>. That is " + pct(data.month[bm], data.revenue) + " of revenue in this view, and " +
+        (data.month[bm] / avg).toFixed(1) + "× the monthly average of " + inr(avg) + "."]);
+    }
+
+    // 2. Region with the most growth, first quarter vs last quarter
+    var qs = []; allMonths.forEach(function (k) { var q = quarterOf(k); if (q && !qs.some(function (x) { return x.key === q.key; })) qs.push(q); });
+    if (qs.length >= 2) {
+      var first = qs[0], last = qs[qs.length - 1];
+      var sumQ = function (reg, q) {
+        var t = 0, rm = data.regionMonth[reg] || {};
+        for (var k in rm) { var qq = quarterOf(k); if (qq && qq.key === q.key) t += rm[k]; }
+        return t;
+      };
+      var bestReg = null;
+      Object.keys(data.region).forEach(function (reg) {
+        var a = sumQ(reg, first), b = sumQ(reg, last);
+        if (a > 0) { var g = (b - a) / a; if (!bestReg || g > bestReg.g) bestReg = { reg: reg, a: a, b: b, g: g }; }
+      });
+      if (bestReg) {
+        var single = Object.keys(data.region).length === 1;
+        var gp = Math.abs(bestReg.g * 100).toFixed(1) + "%";
+        var dir = bestReg.g >= 0 ? '<span class="up">up ' + gp + "</span>" : '<span class="down">down ' + gp + "</span>";
+        var lead = single
+          ? "<b>" + esc(bestReg.reg) + "</b> went from "
+          : (bestReg.g >= 0 ? "<b>" + esc(bestReg.reg) + "</b> grew the most, from " : "<b>" + esc(bestReg.reg) + "</b> held up best, going from ");
+        items.push(["Fastest-growing region",
+          lead + inr(bestReg.a) + " in " + first.label + " (" + first.range + ") to " + inr(bestReg.b) +
+          " in " + last.label + " (" + last.range + "), " + dir + "."]);
+      } else items.push(["Fastest-growing region", "No region had sales in " + first.label + ", so growth can't be measured."]);
+    } else items.push(["Fastest-growing region", "The data covers only one quarter, so there is nothing to compare growth against."]);
+
+    // 3. Highest average price per unit
+    var bestP = null;
+    Object.keys(data.product).forEach(function (p) {
+      var u = data.productUnits[p];
+      if (u > 0) { var ap = data.product[p] / u; if (!bestP || ap > bestP.ap) bestP = { p: p, ap: ap, u: u }; }
+    });
+    if (bestP) {
+      var overall = data.units ? data.revenue / data.units : 0;
+      var oneProd = Object.keys(data.product).length === 1;
+      items.push([oneProd ? "Average price per unit" : "Highest price per unit",
+        "<b>" + esc(bestP.p) + "</b>" + (oneProd ? " sells for an average of <b>" : " has the highest average price at <b>") + inr(bestP.ap, 0) + "</b> per unit, across " +
+        inGroup.format(bestP.u) + " units sold" +
+        (Object.keys(data.product).length > 1 && overall ? ", " + (bestP.ap / overall).toFixed(1) + "× the overall average of " + inr(overall, 0) : "") + "."]);
+    }
+
+    $("insightList").innerHTML = items.map(function (it, i) {
+      return '<li><span class="num">' + (i + 1) + '</span><div><span class="kind">' + it[0] + "</span><p>" + it[1] + "</p></div></li>";
+    }).join("");
+  }
+
+  /* ---------- Render ---------- */
+  function render(data) {
+    var keys = Object.keys(data.month).sort();
+    var br = best(data.region), bp = best(data.product);
+    $("kRev").textContent = inr(data.revenue);
+    $("kRev").title = inrFull(Math.round(data.revenue));
+    $("kRevNote").textContent = inrFull(Math.round(data.revenue));
+    $("kUnits").textContent = inGroup.format(data.units);
+    $("kUnitsNote").textContent = "Avg. " + inr(data.revenue / (data.units || 1), 0) + " per unit";
+    $("kRegion").textContent = br;
+    $("kRegionNote").textContent = inr(data.region[br]) + " · " + pct(data.region[br], data.revenue) + " of revenue";
+    $("kProduct").textContent = bp;
+    $("kProductNote").textContent = inr(data.product[bp]) + " · " + pct(data.product[bp], data.revenue) + " of revenue";
+    var fr = $("fRegion").value, fp = $("fProduct").value;
+    $("filterStatus").innerHTML = (!fr && !fp)
+      ? "Showing <b>all regions</b> and <b>all products</b>"
+      : "Showing <b>" + esc(fr || "All regions") + "</b> · <b>" + esc(fp || "All products") + "</b>";
+    $("resetBtn").disabled = !fr && !fp;
+    $("regionHint").textContent = "Total for the period · " + (fp || "all products");
+    $("monthHint").textContent = (fr || "All regions") + " · " + (fp || "all products");
+    $("fRegion").classList.toggle("active", !!fr);
+    $("fProduct").classList.toggle("active", !!fp);
+    $("footer").textContent = (data.rows === allRecords.length
+        ? inGroup.format(data.rows) + " rows loaded."
+        : inGroup.format(data.rows) + " of " + inGroup.format(allRecords.length) + " rows match the filters.") +
+      " Cr = crore (1,00,00,000); L = lakh (1,00,000). Hover the charts or table figures for exact amounts.";
+    $("empty").hidden = true; $("empty").style.display = "none";
+    $("dash").hidden = false;
+    drawRegion(data); drawMonth(data); drawTable(data); drawInsights(data);
+  }
+
+  function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
+  function showError(msg) { var e = $("error"); e.textContent = msg; e.style.display = msg ? "block" : "none"; }
+
+  /* ---------- Filters ---------- */
+  var allRecords = [], allMonths = [];
+  function uniq(key) {
+    var seen = {};
+    allRecords.forEach(function (r) { seen[r[key]] = 1; });
+    return Object.keys(seen).sort();
+  }
+  function fillSelect(sel, allLabel, values) {
+    sel.innerHTML = "";
+    sel.appendChild(new Option(allLabel, ""));
+    values.forEach(function (v) { sel.appendChild(new Option(v, v)); });
+  }
+  function applyFilters() {
+    var fr = $("fRegion").value, fp = $("fProduct").value;
+    var recs = allRecords.filter(function (r) {
+      return (!fr || r.region === fr) && (!fp || r.product === fp);
+    });
+    lastData = aggregate(recs, allMonths);
+    render(lastData);
+  }
+  $("fRegion").addEventListener("change", applyFilters);
+  $("fProduct").addEventListener("change", applyFilters);
+  $("resetBtn").addEventListener("click", function () {
+    $("fRegion").value = ""; $("fProduct").value = ""; applyFilters();
+  });
+
+  function loadFile(file) {
+    if (!file) return;
+    var reader = new FileReader();
+    reader.onload = function () {
+      try {
+        var rows = parseCSV(reader.result);
+        if (rows.length < 2) throw new Error("That file looks empty.");
+        allRecords = toRecords(rows);
+        allMonths = uniq("month");
+        var regions = uniq("region"), products = uniq("product");
+        fillSelect($("fRegion"), "All regions", regions);
+        fillSelect($("fProduct"), "All products", products);
+        $("period").textContent = (allMonths.length > 1
+            ? monthLabel(allMonths[0], true) + " – " + monthLabel(allMonths[allMonths.length - 1], true)
+            : monthLabel(allMonths[0], true)) +
+          " · " + regions.length + " regions · " + products.length + " products";
+        showError("");
+        $("fileName").textContent = file.name;
+        applyFilters();
+        $("printBtn").hidden = false;
+      } catch (err) { showError("Couldn't read " + file.name + ": " + err.message); }
+    };
+    reader.onerror = function () { showError("Couldn't open the file."); };
+    reader.readAsText(file);
+  }
+
+  $("loadBtn").addEventListener("click", function () { $("fileInput").click(); });
+  $("fileInput").addEventListener("change", function (e) { loadFile(e.target.files[0]); e.target.value = ""; });
+
+  var drop = $("empty");
+  ["dragenter", "dragover"].forEach(function (t) {
+    document.addEventListener(t, function (e) { e.preventDefault(); drop.classList.add("drag"); });
+  });
+  ["dragleave", "drop"].forEach(function (t) {
+    document.addEventListener(t, function (e) { e.preventDefault(); if (t === "drop" || !e.relatedTarget) drop.classList.remove("drag"); });
+  });
+  document.addEventListener("drop", function (e) { if (e.dataTransfer.files.length) loadFile(e.dataTransfer.files[0]); });
+
+  var rt;
+  /* ---------- Print ---------- */
+  var printing = false;
+  function setPrinting(on) {
+    if (printing === on) return;
+    printing = on;
+    if (on) {
+      var fr = $("fRegion").value, fp = $("fProduct").value;
+      $("printMeta").innerHTML = "Filters: <b>" + esc(fr || "All regions") + "</b> · <b>" + esc(fp || "All products") + "</b><br>" +
+        "Source: " + esc($("fileName").textContent) + " · Printed " +
+        new Date().toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" });
+    }
+    if (lastData) { drawRegion(lastData); drawMonth(lastData); }
+  }
+  window.addEventListener("beforeprint", function () { setPrinting(true); });
+  window.addEventListener("afterprint", function () { setPrinting(false); });
+  if (window.matchMedia) {
+    var mq = window.matchMedia("print");
+    var onMq = function (e) { setPrinting(e.matches); };
+    if (mq.addEventListener) mq.addEventListener("change", onMq); else if (mq.addListener) mq.addListener(onMq);
+  }
+  $("printBtn").addEventListener("click", function () { setPrinting(true); window.print(); });
+
+  window.addEventListener("resize", function () {
+    clearTimeout(rt);
+    rt = setTimeout(function () { if (lastData) { drawRegion(lastData); drawMonth(lastData); } }, 120);
+  });
+})();
+</script>
+</body>
+</html>
