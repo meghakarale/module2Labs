@@ -1,0 +1,433 @@
+Month,Region,Product,Units,Revenue
+2025-01,North,Laptop,43,2681935
+2025-01,North,Monitor,74,1069314
+2025-01,North,Keyboard,165,299595
+2025-01,North,Mouse,219,197335
+2025-01,North,Headset,103,339257
+2025-01,North,Webcam,68,173324
+2025-01,North,Docking Station,29,293000
+2025-01,North,Printer,23,274329
+2025-01,North,Tablet,44,1289258
+2025-01,South,Laptop,33,2069644
+2025-01,South,Monitor,43,593260
+2025-01,South,Keyboard,121,208207
+2025-01,South,Mouse,160,140284
+2025-01,South,Headset,62,197684
+2025-01,South,Webcam,55,147897
+2025-01,South,Docking Station,24,238500
+2025-01,South,Printer,16,203249
+2025-01,South,Tablet,28,766608
+2025-01,East,Laptop,32,2082345
+2025-01,East,Monitor,46,680861
+2025-01,East,Keyboard,99,173383
+2025-01,East,Mouse,144,124030
+2025-01,East,Headset,68,215433
+2025-01,East,Webcam,54,138807
+2025-01,East,Docking Station,24,243369
+2025-01,East,Printer,12,145646
+2025-01,East,Tablet,28,781647
+2025-01,West,Laptop,46,2822745
+2025-01,West,Monitor,52,763761
+2025-01,West,Keyboard,163,286645
+2025-01,West,Mouse,193,170792
+2025-01,West,Headset,103,338105
+2025-01,West,Webcam,62,157112
+2025-01,West,Docking Station,26,243586
+2025-01,West,Printer,22,266136
+2025-01,West,Tablet,36,1002700
+2025-02,North,Laptop,40,2537510
+2025-02,North,Monitor,59,867795
+2025-02,North,Keyboard,147,262503
+2025-02,North,Mouse,223,196080
+2025-02,North,Headset,114,375868
+2025-02,North,Webcam,73,197105
+2025-02,North,Docking Station,30,290892
+2025-02,North,Printer,25,316932
+2025-02,North,Tablet,34,998582
+2025-02,South,Laptop,31,1875541
+2025-02,South,Monitor,56,798111
+2025-02,South,Keyboard,121,208509
+2025-02,South,Mouse,165,149729
+2025-02,South,Headset,71,229501
+2025-02,South,Webcam,58,150094
+2025-02,South,Docking Station,29,283737
+2025-02,South,Printer,18,233247
+2025-02,South,Tablet,27,729853
+2025-02,East,Laptop,32,2047052
+2025-02,East,Monitor,40,562008
+2025-02,East,Keyboard,115,216116
+2025-02,East,Mouse,143,134493
+2025-02,East,Headset,72,232785
+2025-02,East,Webcam,49,122353
+2025-02,East,Docking Station,18,184562
+2025-02,East,Printer,13,165824
+2025-02,East,Tablet,23,664847
+2025-02,West,Laptop,42,2550211
+2025-02,West,Monitor,55,815073
+2025-02,West,Keyboard,133,232898
+2025-02,West,Mouse,227,211500
+2025-02,West,Headset,94,294189
+2025-02,West,Webcam,80,201843
+2025-02,West,Docking Station,26,248919
+2025-02,West,Printer,20,239011
+2025-02,West,Tablet,32,884243
+2025-03,North,Laptop,46,2746926
+2025-03,North,Monitor,65,979346
+2025-03,North,Keyboard,193,352852
+2025-03,North,Mouse,261,236884
+2025-03,North,Headset,90,274610
+2025-03,North,Webcam,67,181346
+2025-03,North,Docking Station,36,369127
+2025-03,North,Printer,19,240734
+2025-03,North,Tablet,39,1117170
+2025-03,South,Laptop,34,2213265
+2025-03,South,Monitor,48,699208
+2025-03,South,Keyboard,147,275189
+2025-03,South,Mouse,215,197441
+2025-03,South,Headset,89,296619
+2025-03,South,Webcam,61,161536
+2025-03,South,Docking Station,31,315074
+2025-03,South,Printer,18,231537
+2025-03,South,Tablet,35,987135
+2025-03,East,Laptop,30,1838114
+2025-03,East,Monitor,45,659604
+2025-03,East,Keyboard,95,173384
+2025-03,East,Mouse,184,171889
+2025-03,East,Headset,70,221501
+2025-03,East,Webcam,55,144158
+2025-03,East,Docking Station,21,212764
+2025-03,East,Printer,13,166566
+2025-03,East,Tablet,22,622239
+2025-03,West,Laptop,41,2473422
+2025-03,West,Monitor,65,942241
+2025-03,West,Keyboard,160,300109
+2025-03,West,Mouse,210,179764
+2025-03,West,Headset,87,283359
+2025-03,West,Webcam,66,165930
+2025-03,West,Docking Station,35,348488
+2025-03,West,Printer,20,259793
+2025-03,West,Tablet,34,967794
+2025-04,North,Laptop,41,2524434
+2025-04,North,Monitor,74,1117446
+2025-04,North,Keyboard,189,336268
+2025-04,North,Mouse,255,225288
+2025-04,North,Headset,91,291097
+2025-04,North,Webcam,87,234088
+2025-04,North,Docking Station,36,368676
+2025-04,North,Printer,21,253815
+2025-04,North,Tablet,39,1067448
+2025-04,South,Laptop,35,2151335
+2025-04,South,Monitor,60,869467
+2025-04,South,Keyboard,137,254963
+2025-04,South,Mouse,244,218556
+2025-04,South,Headset,76,231806
+2025-04,South,Webcam,75,186059
+2025-04,South,Docking Station,31,305944
+2025-04,South,Printer,18,231559
+2025-04,South,Tablet,29,782434
+2025-04,East,Laptop,29,1712546
+2025-04,East,Monitor,49,691843
+2025-04,East,Keyboard,99,170127
+2025-04,East,Mouse,170,152181
+2025-04,East,Headset,69,224223
+2025-04,East,Webcam,57,154994
+2025-04,East,Docking Station,23,218623
+2025-04,East,Printer,15,181475
+2025-04,East,Tablet,22,614287
+2025-04,West,Laptop,44,2640458
+2025-04,West,Monitor,58,828027
+2025-04,West,Keyboard,166,299410
+2025-04,West,Mouse,238,219688
+2025-04,West,Headset,91,299701
+2025-04,West,Webcam,82,204399
+2025-04,West,Docking Station,35,350628
+2025-04,West,Printer,19,236396
+2025-04,West,Tablet,38,1107620
+2025-05,North,Laptop,44,2746772
+2025-05,North,Monitor,76,1134704
+2025-05,North,Keyboard,194,347933
+2025-05,North,Mouse,263,229715
+2025-05,North,Headset,110,363206
+2025-05,North,Webcam,83,220497
+2025-05,North,Docking Station,31,315952
+2025-05,North,Printer,26,340514
+2025-05,North,Tablet,40,1152568
+2025-05,South,Laptop,39,2517136
+2025-05,South,Monitor,68,971063
+2025-05,South,Keyboard,134,239775
+2025-05,South,Mouse,229,211628
+2025-05,South,Headset,92,280516
+2025-05,South,Webcam,78,193959
+2025-05,South,Docking Station,33,312821
+2025-05,South,Printer,19,244338
+2025-05,South,Tablet,32,864521
+2025-05,East,Laptop,30,1901583
+2025-05,East,Monitor,50,738729
+2025-05,East,Keyboard,129,232028
+2025-05,East,Mouse,189,163058
+2025-05,East,Headset,62,198929
+2025-05,East,Webcam,50,132975
+2025-05,East,Docking Station,24,235736
+2025-05,East,Printer,17,213774
+2025-05,East,Tablet,25,691685
+2025-05,West,Laptop,47,3030713
+2025-05,West,Monitor,58,870500
+2025-05,West,Keyboard,181,326589
+2025-05,West,Mouse,238,207795
+2025-05,West,Headset,96,307298
+2025-05,West,Webcam,77,190746
+2025-05,West,Docking Station,36,353365
+2025-05,West,Printer,21,270403
+2025-05,West,Tablet,38,1063047
+2025-06,North,Laptop,49,2906120
+2025-06,North,Monitor,70,1006248
+2025-06,North,Keyboard,197,369614
+2025-06,North,Mouse,237,212728
+2025-06,North,Headset,92,292447
+2025-06,North,Webcam,89,240669
+2025-06,North,Docking Station,34,327110
+2025-06,North,Printer,21,265595
+2025-06,North,Tablet,46,1240275
+2025-06,South,Laptop,47,2774940
+2025-06,South,Monitor,59,832167
+2025-06,South,Keyboard,171,302324
+2025-06,South,Mouse,227,206747
+2025-06,South,Headset,86,281554
+2025-06,South,Webcam,67,174382
+2025-06,South,Docking Station,30,285113
+2025-06,South,Printer,22,273261
+2025-06,South,Tablet,36,999271
+2025-06,East,Laptop,31,1856600
+2025-06,East,Monitor,42,616997
+2025-06,East,Keyboard,120,216640
+2025-06,East,Mouse,187,170180
+2025-06,East,Headset,77,239813
+2025-06,East,Webcam,58,155482
+2025-06,East,Docking Station,26,250108
+2025-06,East,Printer,15,195427
+2025-06,East,Tablet,25,734885
+2025-06,West,Laptop,48,2867058
+2025-06,West,Monitor,59,874884
+2025-06,West,Keyboard,150,259119
+2025-06,West,Mouse,260,232166
+2025-06,West,Headset,105,323434
+2025-06,West,Webcam,73,193315
+2025-06,West,Docking Station,28,266194
+2025-06,West,Printer,23,299327
+2025-06,West,Tablet,43,1157695
+2025-07,North,Laptop,47,2989226
+2025-07,North,Monitor,70,1033847
+2025-07,North,Keyboard,159,273909
+2025-07,North,Mouse,226,193991
+2025-07,North,Headset,107,342908
+2025-07,North,Webcam,83,208173
+2025-07,North,Docking Station,32,304315
+2025-07,North,Printer,26,340935
+2025-07,North,Tablet,46,1235868
+2025-07,South,Laptop,39,2527171
+2025-07,South,Monitor,67,997218
+2025-07,South,Keyboard,162,290637
+2025-07,South,Mouse,251,224321
+2025-07,South,Headset,105,319645
+2025-07,South,Webcam,84,225919
+2025-07,South,Docking Station,31,302401
+2025-07,South,Printer,24,297159
+2025-07,South,Tablet,36,974240
+2025-07,East,Laptop,31,1828863
+2025-07,East,Monitor,53,791686
+2025-07,East,Keyboard,125,233116
+2025-07,East,Mouse,179,159562
+2025-07,East,Headset,73,233700
+2025-07,East,Webcam,63,168793
+2025-07,East,Docking Station,22,224468
+2025-07,East,Printer,17,218407
+2025-07,East,Tablet,30,832073
+2025-07,West,Laptop,49,3153396
+2025-07,West,Monitor,69,1027240
+2025-07,West,Keyboard,177,315597
+2025-07,West,Mouse,256,220506
+2025-07,West,Headset,93,296673
+2025-07,West,Webcam,65,166560
+2025-07,West,Docking Station,34,337332
+2025-07,West,Printer,20,261117
+2025-07,West,Tablet,40,1101835
+2025-08,North,Laptop,49,3059137
+2025-08,North,Monitor,71,1018134
+2025-08,North,Keyboard,203,370598
+2025-08,North,Mouse,275,253978
+2025-08,North,Headset,121,368724
+2025-08,North,Webcam,85,226277
+2025-08,North,Docking Station,33,320216
+2025-08,North,Printer,20,242386
+2025-08,North,Tablet,40,1075026
+2025-08,South,Laptop,44,2838659
+2025-08,South,Monitor,73,1059328
+2025-08,South,Keyboard,204,369696
+2025-08,South,Mouse,301,274639
+2025-08,South,Headset,117,358533
+2025-08,South,Webcam,86,229397
+2025-08,South,Docking Station,31,316868
+2025-08,South,Printer,21,261759
+2025-08,South,Tablet,38,1063523
+2025-08,East,Laptop,33,1955678
+2025-08,East,Monitor,54,776791
+2025-08,East,Keyboard,121,219931
+2025-08,East,Mouse,168,147961
+2025-08,East,Headset,75,241455
+2025-08,East,Webcam,52,138128
+2025-08,East,Docking Station,22,205122
+2025-08,East,Printer,15,178927
+2025-08,East,Tablet,25,717825
+2025-08,West,Laptop,43,2771985
+2025-08,West,Monitor,71,983189
+2025-08,West,Keyboard,190,357200
+2025-08,West,Mouse,212,198538
+2025-08,West,Headset,97,309705
+2025-08,West,Webcam,88,222936
+2025-08,West,Docking Station,33,337541
+2025-08,West,Printer,24,299051
+2025-08,West,Tablet,44,1271017
+2025-09,North,Laptop,49,2921065
+2025-09,North,Monitor,74,1068245
+2025-09,North,Keyboard,162,278538
+2025-09,North,Mouse,264,228674
+2025-09,North,Headset,105,341641
+2025-09,North,Webcam,82,208129
+2025-09,North,Docking Station,37,359682
+2025-09,North,Printer,26,326000
+2025-09,North,Tablet,48,1404834
+2025-09,South,Laptop,53,3200042
+2025-09,South,Monitor,66,994581
+2025-09,South,Keyboard,203,369967
+2025-09,South,Mouse,263,231292
+2025-09,South,Headset,119,383271
+2025-09,South,Webcam,90,237115
+2025-09,South,Docking Station,40,379841
+2025-09,South,Printer,23,301292
+2025-09,South,Tablet,49,1423968
+2025-09,East,Laptop,28,1659753
+2025-09,East,Monitor,45,647619
+2025-09,East,Keyboard,126,217784
+2025-09,East,Mouse,181,155936
+2025-09,East,Headset,64,208410
+2025-09,East,Webcam,58,152777
+2025-09,East,Docking Station,23,224917
+2025-09,East,Printer,15,184569
+2025-09,East,Tablet,31,897386
+2025-09,West,Laptop,39,2326065
+2025-09,West,Monitor,73,1071597
+2025-09,West,Keyboard,182,318203
+2025-09,West,Mouse,241,211653
+2025-09,West,Headset,110,347387
+2025-09,West,Webcam,82,223629
+2025-09,West,Docking Station,32,315125
+2025-09,West,Printer,24,312625
+2025-09,West,Tablet,38,1050089
+2025-10,North,Laptop,42,2701696
+2025-10,North,Monitor,63,875409
+2025-10,North,Keyboard,183,328901
+2025-10,North,Mouse,278,245168
+2025-10,North,Headset,117,358528
+2025-10,North,Webcam,77,203445
+2025-10,North,Docking Station,31,297840
+2025-10,North,Printer,26,331304
+2025-10,North,Tablet,39,1053007
+2025-10,South,Laptop,50,3170052
+2025-10,South,Monitor,75,1045890
+2025-10,South,Keyboard,208,376994
+2025-10,South,Mouse,323,303489
+2025-10,South,Headset,132,419781
+2025-10,South,Webcam,100,254924
+2025-10,South,Docking Station,37,358959
+2025-10,South,Printer,29,376809
+2025-10,South,Tablet,42,1159735
+2025-10,East,Laptop,32,1956881
+2025-10,East,Monitor,48,688176
+2025-10,East,Keyboard,113,204698
+2025-10,East,Mouse,198,178923
+2025-10,East,Headset,82,264047
+2025-10,East,Webcam,52,138701
+2025-10,East,Docking Station,28,268403
+2025-10,East,Printer,14,175274
+2025-10,East,Tablet,29,817478
+2025-10,West,Laptop,52,3272748
+2025-10,West,Monitor,74,1026223
+2025-10,West,Keyboard,173,320370
+2025-10,West,Mouse,219,188855
+2025-10,West,Headset,109,362720
+2025-10,West,Webcam,70,184441
+2025-10,West,Docking Station,30,301226
+2025-10,West,Printer,24,292364
+2025-10,West,Tablet,36,1034748
+2025-11,North,Laptop,49,3118419
+2025-11,North,Monitor,70,998538
+2025-11,North,Keyboard,207,379023
+2025-11,North,Mouse,266,240294
+2025-11,North,Headset,116,378926
+2025-11,North,Webcam,95,244792
+2025-11,North,Docking Station,40,398536
+2025-11,North,Printer,27,347824
+2025-11,North,Tablet,47,1367146
+2025-11,South,Laptop,62,3897921
+2025-11,South,Monitor,82,1213979
+2025-11,South,Keyboard,222,396468
+2025-11,South,Mouse,292,253502
+2025-11,South,Headset,131,439783
+2025-11,South,Webcam,92,231250
+2025-11,South,Docking Station,37,359879
+2025-11,South,Printer,26,340267
+2025-11,South,Tablet,41,1126009
+2025-11,East,Laptop,30,1887524
+2025-11,East,Monitor,55,771935
+2025-11,East,Keyboard,109,195391
+2025-11,East,Mouse,189,177062
+2025-11,East,Headset,65,199860
+2025-11,East,Webcam,53,133905
+2025-11,East,Docking Station,23,230297
+2025-11,East,Printer,17,206634
+2025-11,East,Tablet,27,739448
+2025-11,West,Laptop,41,2607457
+2025-11,West,Monitor,65,947046
+2025-11,West,Keyboard,189,339502
+2025-11,West,Mouse,235,219694
+2025-11,West,Headset,116,365338
+2025-11,West,Webcam,82,222944
+2025-11,West,Docking Station,34,323904
+2025-11,West,Printer,20,261188
+2025-11,West,Tablet,44,1217829
+2025-12,North,Laptop,79,4905748
+2025-12,North,Monitor,109,1657983
+2025-12,North,Keyboard,307,538101
+2025-12,North,Mouse,367,329396
+2025-12,North,Headset,169,556849
+2025-12,North,Webcam,146,383627
+2025-12,North,Docking Station,53,501580
+2025-12,North,Printer,37,451373
+2025-12,North,Tablet,76,2131431
+2025-12,South,Laptop,94,6115390
+2025-12,South,Monitor,126,1833317
+2025-12,South,Keyboard,304,561995
+2025-12,South,Mouse,424,393865
+2025-12,South,Headset,225,743190
+2025-12,South,Webcam,139,353085
+2025-12,South,Docking Station,72,677176
+2025-12,South,Printer,45,560737
+2025-12,South,Tablet,90,2541832
+2025-12,East,Laptop,61,3707719
+2025-12,East,Monitor,89,1279785
+2025-12,East,Keyboard,231,398792
+2025-12,East,Mouse,330,288340
+2025-12,East,Headset,125,401027
+2025-12,East,Webcam,86,231024
+2025-12,East,Docking Station,39,374967
+2025-12,East,Printer,24,294171
+2025-12,East,Tablet,47,1344313
+2025-12,West,Laptop,71,4484359
+2025-12,West,Monitor,99,1420318
+2025-12,West,Keyboard,276,519996
+2025-12,West,Mouse,451,412148
+2025-12,West,Headset,143,451977
+2025-12,West,Webcam,139,351912
+2025-12,West,Docking Station,57,556259
+2025-12,West,Printer,32,419665
+2025-12,West,Tablet,71,1929698
